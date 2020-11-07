@@ -5,11 +5,21 @@ import SearchBarHeader from '../components/SearchBarHeader'
 import HomeLogo from '../components/HomeLogo'
 import { Ionicons } from '@expo/vector-icons';
 
+import { useDispatch } from 'react-redux';
+import { searchMovies } from '../store/actions/movies';
+
+
 const MoviesSearchScreen = props => {
+    const dispatch = useDispatch()
+
+    const searchMoviesHandler = async (searchText) => {
+        
+        await dispatch(searchMovies(searchText));
+    }
     return (
         <View style={{ flex: 1 }}>
-            <SearchBarHeader onSearchPress={()=>{}}/>
-            <HomeLogo/>
+            <SearchBarHeader onSearchPress={searchMoviesHandler} />
+            <HomeLogo />
         </View>
     )
 }

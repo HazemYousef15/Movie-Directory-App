@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, View, TextInput, StatusBar, TouchableOpacity } from 'react-native';
 import Colors from '../constants/Colors'
 import { Ionicons } from '@expo/vector-icons';
 
 const SearchBarHeader = props => {
+    const [searchText, setSearchText] = useState("")
     return (
         <View>
             <StatusBar barStyle="light-content" backgroundColor={Colors.primary} />
@@ -13,8 +14,12 @@ const SearchBarHeader = props => {
                         style={styles.input}
                         placeholder="Search..."
                         placeholderTextColor="gray"
+                        onChangeText={text => { 
+                            setSearchText(text) 
+                        }}
+                        value={searchText}
                     />
-                    <TouchableOpacity onPress={props.onSearchPress} style={styles.iconButton} activeOpacity={0.5}>
+                    <TouchableOpacity onPress={() => {props.onSearchPress(searchText)}} style={styles.iconButton} activeOpacity={0.5}>
                         <Ionicons name="md-search" size={20} color={Colors.primary} />
                     </TouchableOpacity>
                 </View>
@@ -46,11 +51,11 @@ const styles = StyleSheet.create({
         width: "85%"
     },
     iconButton: {
-        backgroundColor:Colors.secondary,
-        width:'8%',
+        backgroundColor: Colors.secondary,
+        width: '8%',
         alignContent: 'center',
-        alignItems:'center',
-        justifyContent:'center',
+        alignItems: 'center',
+        justifyContent: 'center',
         borderRadius: 15,
     }
 })
