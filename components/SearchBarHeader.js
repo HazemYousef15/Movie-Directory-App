@@ -19,7 +19,7 @@ const SearchBarHeader = props => {
                         }}
                         value={searchText}
                     />
-                    <TouchableOpacity onPress={() => {props.onSearchPress(searchText)}} style={styles.iconButton} activeOpacity={0.5}>
+                    <TouchableOpacity onPress={() => {props.onSearchPress(searchText)}} style={styles.iconButton} activeOpacity={0.7}>
                         <Ionicons name="md-search" size={20} color={Colors.primary} />
                     </TouchableOpacity>
                 </View>
@@ -51,9 +51,8 @@ const styles = StyleSheet.create({
         width: "85%"
     },
     iconButton: {
-        backgroundColor: Colors.secondary,
+        backgroundColor: Colors.lightBrown,
         width: '8%',
-        alignContent: 'center',
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 15,

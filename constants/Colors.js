@@ -1,6 +1,7 @@
 export default {
     primary: '#343434',
-    secondary: '#e4d8b7',
+    secondary: '#75524f',
     red:'#ec363e',
-    blue:'#249e9d'
+    blue:'#249e9d',
+    lightBrown:'#e1d0b1'
 }
