@@ -8,11 +8,22 @@ import { StyleSheet, Text, View } from 'react-native';
 import AppNavigator from './navigation/AppNavigator';
 
 import moviesReducer from './store/reducers/movies';
+import searchHistoryReducer from './store/reducers/searchHistory';
 
+import { init } from './helpers/localDP'
 
+init()
+  .then(() => {
+    console.log('Initialized database');
+  })
+  .catch(err => {
+    console.log('Initializing db failed.');
+    console.log(err);
+  });
 
 const rootReducer = combineReducers({
   movies: moviesReducer,
+  searchHisrory:searchHistoryReducer
 });
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));

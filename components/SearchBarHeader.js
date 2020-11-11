@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { StyleSheet, View, TextInput, StatusBar, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, TextInput, StatusBar, TouchableOpacity, TextInputComponent } from 'react-native';
 import Colors from '../constants/Colors'
 import { Ionicons } from '@expo/vector-icons';
 
@@ -9,17 +9,21 @@ const SearchBarHeader = props => {
         <View>
             <StatusBar barStyle="light-content" backgroundColor={Colors.primary} />
             <View style={styles.header}>
-                <View style={styles.container}>
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Search..."
-                        placeholderTextColor="gray"
-                        onChangeText={text => { 
-                            setSearchText(text) 
-                        }}
-                        value={searchText}
-                    />
-                    <TouchableOpacity onPress={() => {props.onSearchPress(searchText)}} style={styles.iconButton} activeOpacity={0.7}>
+                <View style={styles.container} >
+                    
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Search..."
+                            placeholderTextColor="gray"
+                            returnKeyType="search"
+                            onSubmitEditing={() => { props.onSearchBTNPress(searchText) }}
+                            onFocus={props.onSearchTXTPress}
+                            onChangeText={text => {
+                                setSearchText(text)
+                            }}
+                            value={searchText}
+                        />
+                    <TouchableOpacity onPress={() => { props.onSearchBTNPress(searchText) }} style={styles.iconButton} activeOpacity={0.7}>
                         <Ionicons name="md-search" size={20} color={Colors.primary} />
                     </TouchableOpacity>
                 </View>

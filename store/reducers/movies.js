@@ -11,7 +11,7 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case SEARCH_MOVIES:
       return {
-        searchResults: state.searchResults.concat(action.searchResults),
+        searchResults: (action.page!==1)?state.searchResults.concat(action.searchResults):action.searchResults,
         numOfPages: action.numOfPages,
         page:action.page
       }
