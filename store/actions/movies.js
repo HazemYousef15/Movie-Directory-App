@@ -8,10 +8,7 @@ export const searchMovies = (searchText, page) => {
   
       const resData = await response.json();
   
-      //console.log(resData)
-      // console.log(searchText)
-      // console.log(page)
-      dispatch({
+      await dispatch({
         type: SEARCH_MOVIES,
         searchResults:resData.results,
         numOfPages:resData.total_pages,
@@ -20,6 +17,7 @@ export const searchMovies = (searchText, page) => {
     }
   }
 
+  
   export const resetData = ()=>{
     return{
       type:RESET_DATA

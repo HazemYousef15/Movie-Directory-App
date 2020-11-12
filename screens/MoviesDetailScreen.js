@@ -4,15 +4,13 @@ import { StyleSheet, Text, View, Image, ImageBackground, Button, Dimensions, Scr
 import { Ionicons } from '@expo/vector-icons';
 import Colors from '../constants/Colors'
 
-const win = Dimensions.get('window');
-const ratio = win.width / 500; //541 is actual image width
 const MoviesDetailScreen = props => {
     const movieData = props.navigation.getParam('movieData')
     return (
         <View style={styles.screen}>
             <ScrollView>
                 <View style={styles.container}>
-                    <ImageBackground style={styles.bgImage} source={{ uri: `http://image.tmdb.org/t/p/w500/${movieData.backdrop_path}` }} >
+                    <ImageBackground style={styles.bgImage} source={(movieData.backdrop_path)?{ uri: `http://image.tmdb.org/t/p/w500/${movieData.backdrop_path}` }:require('../assets/default-movie.png')} >
                         <Ionicons
                             onPress={() => { props.navigation.goBack(); }}
                             name="md-arrow-back"
@@ -21,7 +19,7 @@ const MoviesDetailScreen = props => {
                             style={{ marginTop: 15, marginLeft: 15 }}
                         />
                         <View style={styles.mainContainer}>
-                            <Image style={styles.image} source={{ uri: `http://image.tmdb.org/t/p/w92/${movieData.poster_path}` }} />
+                            <Image style={styles.image} source={(movieData.poster_path)?{ uri: `http://image.tmdb.org/t/p/w92/${movieData.poster_path}` }:require('../assets/default-movie.png')} />
                             <View style={styles.textsContainer}>
                                 <View>
                                     <Text style={styles.secondaryColor}> {(movieData.release_date) ? movieData.release_date.slice(0, 4) : ""} </Text>
@@ -46,12 +44,17 @@ const MoviesDetailScreen = props => {
     );
 }
 
+
+//hide default header
 MoviesDetailScreen.navigationOptions = navData => {
     return {
         headerShown: false
     };
 };
 
+
+const win = Dimensions.get('window');
+const ratio = win.width / 500;
 const styles = StyleSheet.create({
     screen: {
         flex: 1,
@@ -79,8 +82,6 @@ const styles = StyleSheet.create({
         marginHorizontal: 15,
         marginBottom: 15,
         flexDirection: 'row',
-        // width: "100%",
-        // height: 150
     },
     textsContainer: {
         flex: 1,

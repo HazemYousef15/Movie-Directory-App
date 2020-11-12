@@ -4,19 +4,20 @@ import { insertSearchText, fetchSearchTexts, deleteSearchText } from '../../help
 export const ADD_SEARCH = 'ADD_SEARCH';
 export const SET_SEARCH_HISTPRY = 'SET_SEARCH_HISTPRY';
 
+
 export const addSearchText = (searchText, textToDelete) => {
     return async dispatch => {
 
         try {
+
             const deleteResult = await deleteSearchText(textToDelete);
             const insertResult = await insertSearchText(searchText);
-            //   console.log(insertResult);
+
             dispatch({
                 type: ADD_SEARCH, searchText: searchText, textToDelete:textToDelete
             });
         } catch (err) {
             console.log(err);
-            throw err;
         }
     };
 };

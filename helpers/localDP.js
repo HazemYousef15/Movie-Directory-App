@@ -3,21 +3,8 @@ import * as SQLite from 'expo-sqlite'
 
 const db = SQLite.openDatabase('search_history.db')
 
+//create table for search history if not exists  
 export const init = () => {
-    // const promisetemp = new Promise((resolve, reject) => {
-    //     db.transaction(tx => {
-    //         tx.executeSql(
-    //             'DROP TABLE search_history ;',
-    //             [],
-    //             () => {
-    //                 resolve();
-    //             },
-    //             (_, err) => {
-    //                 reject(err);
-    //             }
-    //         );
-    //     });
-    // });
     const promise = new Promise((resolve, reject) => {
         db.transaction(tx => {
             tx.executeSql(
@@ -35,6 +22,8 @@ export const init = () => {
     return promise;
 };
 
+
+//insert text in the table 
 export const insertSearchText = (searchText) => {
     const promise = new Promise((resolve, reject) => {
         db.transaction(tx => {
@@ -43,7 +32,6 @@ export const insertSearchText = (searchText) => {
                 [searchText],
                 (_, result) => {
                     resolve(result);
-                    console.log("Added sucessfully")
                 },
                 (_, err) => {
                     reject(err);
@@ -54,6 +42,8 @@ export const insertSearchText = (searchText) => {
     return promise;
 };
 
+
+//delete from table  
 export const deleteSearchText = (searchText) => {
     const promise = new Promise((resolve, reject) => {
         db.transaction(tx => {
@@ -62,7 +52,6 @@ export const deleteSearchText = (searchText) => {
                 [searchText],
                 (_, result) => {
                     resolve(result);
-                    console.log("Deleted sucessfully")
                 },
                 (_, err) => {
                     reject(err);

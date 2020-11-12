@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     StyleSheet,
     Text,
@@ -13,7 +13,7 @@ import Colors from '../constants/Colors'
 import SearchBarHeader from '../components/SearchBarHeader'
 import HomeLogo from '../components/HomeLogo'
 import MovieItem from '../components/MovieItem'
-import { Ionicons } from '@expo/vector-icons'
+
 
 import { useDispatch, useSelector } from 'react-redux'
 import { searchMovies, resetData } from '../store/actions/movies'
@@ -24,30 +24,21 @@ import { addSearchText, loadSearchHistory } from '../store/actions/searchHistory
 const MoviesSearchScreen = props => {
     const dispatch = useDispatch()
 
+
+    //data got from the store 
     const searchResults = useSelector(state => state.movies.searchResults)
     const numberOfPages = useSelector(state => state.movies.numOfPages)
     const searchHistory = useSelector(state => state.searchHisrory.SearchHistory)
     const pageNumber = useSelector(state => state.movies.page)
 
 
+    const [searchText, setSearchText] = useState("")
     const [renderHomeLogo, setRenderHomeLogo] = useState(true)
     const [showSearchHistory, setShowSearchHistory] = useState(false)
-    const [searchText, setSearchText] = useState("")
     const [isLoading, setIsLoading] = useState(false)
     const [showNoMoviesMsg, setShowNoMoviesMsg] = useState(false)
 
-    // const [isLoadingMore, setIsLoadingMore] = useState(false)
-
-
-    // useEffect(() => {
-    //     console.log(searchResults)
-    // }, [searchResults])
-
-
-    // useEffect(() => {
-    //     console.log(showSearchHistory)
-    // }, [showSearchHistory])
-
+    //load search history
     useEffect(() => {
         dispatch(loadSearchHistory());
     }, [dispatch]);
@@ -55,35 +46,46 @@ const MoviesSearchScreen = props => {
 
     const searchMoviesHandler = async (text) => {
         Keyboard.dismiss()
+        //reset booleans needed 
         setShowSearchHistory(false)
-        setShowNoMoviesMsg(false)
+        setRenderHomeLogo(false)
+
         setSearchText(text)
-        await dispatch(resetData())
 
         if (text === '') {
             setRenderHomeLogo(true)
             return
         }
 
-        setRenderHomeLogo(false)
+        //reset search results in the store to empty
+        await dispatch(resetData())
+
+        //handle loading spinner
         setIsLoading(true)
         await dispatch(searchMovies(text, 1))
         setIsLoading(false)
-        if (numberOfPages !== 0){
-            console.log('fuck fuck')
-            let textToDelete=''
-            if(searchHistory.length >= 10){
-                textToDelete=searchHistory[searchHistory.length-1]
-            }
-            await dispatch(addSearchText(text,textToDelete))
 
-        }
-        else
-            setShowNoMoviesMsg(true)
-        
     }
 
 
+    //handle if ther is no search results and add search text to history and delete one if got to 10 
+    useEffect(() => {
+        setShowNoMoviesMsg(false)
+        if (numberOfPages !== 0) {
+            let textToDelete = ''
+            if (searchHistory.length >= 10) {
+                textToDelete = searchHistory[searchHistory.length - 1]
+            }
+             dispatch(addSearchText(searchText, textToDelete))
+
+        }
+        else {
+            setShowNoMoviesMsg(true)
+        }
+    }, [numberOfPages])
+
+
+    //pagination
     const loadMoreHandler = async () => {
         if (pageNumber < numberOfPages) {
             await dispatch(searchMovies(searchText, pageNumber + 1))
@@ -91,15 +93,19 @@ const MoviesSearchScreen = props => {
     }
 
 
+    //navigate to movie detail screen
     const SelectMovieItemHandler = (MovieItemData) => {
         props.navigation.navigate('MovieDetail', {
             movieData: MovieItemData
         });
     };
 
+
+
     const onSearchFieldPress = () => {
         setShowSearchHistory(true)
     }
+
 
     const MovieFlatList = <FlatList
         data={searchResults}
@@ -135,10 +141,10 @@ const MoviesSearchScreen = props => {
                                 <View style={styles.centered}>
                                     <ActivityIndicator size="large" color={Colors.red} />
                                 </View> :
-                                <View style={{flex:1}}>
+                                <View style={{ flex: 1 }}>
                                     {showNoMoviesMsg ?
                                         <View style={styles.centered}>
-                                            <Text style={{color: Colors.primary, fontSize: 20}}>No movies found</Text>
+                                            <Text style={{ color: Colors.primary, fontSize: 20 }}>No movies found</Text>
                                         </View> :
                                         <View>
                                             {MovieFlatList}
@@ -155,6 +161,7 @@ const MoviesSearchScreen = props => {
 }
 
 
+//hide default header
 MoviesSearchScreen.navigationOptions = navData => {
     return {
         headerShown: false

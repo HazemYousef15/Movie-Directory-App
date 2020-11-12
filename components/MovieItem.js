@@ -1,16 +1,13 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
 import Colors from '../constants/Colors'
 import { Ionicons } from '@expo/vector-icons';
 
 const MovieItem = props => {
-    // useEffect(() => {
-    //     console.log(props.movieData.release_date)
-    // }, [props])
 
     return (
         <TouchableOpacity style={styles.mainContainer} onPress={props.onSelect} activeOpacity={0.7}>
-            <Image style={styles.image} source={{ uri: `http://image.tmdb.org/t/p/w92/${props.movieData.poster_path}` }} />
+            <Image style={styles.image} source={(props.movieData.poster_path)?{ uri: `http://image.tmdb.org/t/p/w92/${props.movieData.poster_path}` }:require('../assets/default-movie.png')} />
             <View style={styles.textsContainer}>
                 <View>
                     <Text style={styles.secondaryColor}> {(props.movieData.release_date)?props.movieData.release_date.slice(0,4):""} </Text>
